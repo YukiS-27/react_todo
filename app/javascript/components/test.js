@@ -9,7 +9,7 @@ const InputName = styled.input`
   width: 100%;
   height: 40px;
   padding: 2px 7px;
-  margin-top: 12px 0;
+  margin: 12px 0;
 `
 
 const CurrentStatus = styled.div`
@@ -72,15 +72,14 @@ function EditTodo(props) {
 
   const getTodo = id => {
     axios.get(`/api/v1/todos/${id}`)
-    .then(res => {
-      setCurrentTodo(res.data)
+    .then(resp => {
+      setCurrentTodo(resp.data)
     })
     .catch(e => {
       console.log(e)
     })
   }
 
-  // URLからidを取得し、そのidが変わったときにuseEffectを実行
   useEffect(() => {
     getTodo(props.match.params.id)
   }, [props.match.params.id])
@@ -93,18 +92,18 @@ function EditTodo(props) {
   const updateIsCompleted = val => {
     var data = {
       id: val.id,
-      name: val.name,
+      name : val.name,
       is_completed: !val.is_completed
     }
     axios.patch(`/api/v1/todos/${val.id}`, data)
-    .then(res => {
-      setCurrentTodo(res.data)
+    .then(resp => {
+      setCurrentTodo(resp.data)
     })
   }
 
   const updateTodo = () => {
     axios.patch(`/api/v1/todos/${currentTodo.id}`, currentTodo)
-    .then(res => {
+    .then(resp => {
       notify()
       props.history.push('/todos')
     })
@@ -117,7 +116,7 @@ function EditTodo(props) {
     const sure = window.confirm('Are you sure?')
     if (sure) {
       axios.delete(`/api/v1/todos/${currentTodo.id}`)
-      .then(res => {
+      .then(resp => {
         props.history.push('/todos')
       })
       .catch(e => {
@@ -125,7 +124,6 @@ function EditTodo(props) {
       })
     }
   }
-
   return (
     <>
       <h1>Editing Todo</h1>
@@ -141,7 +139,7 @@ function EditTodo(props) {
           <div>
             <span>Current Status</span><br/>
             <CurrentStatus>
-              {currentTodo.is_completed ? "Completed" : "Uncompleted"}
+              {currentTodo.is_completed ? "Completed" : "Uncompleted" }
             </CurrentStatus>
           </div>
         </div>
